@@ -21,7 +21,7 @@ def plot():
     
     orig_template="index.html"
     output_html="plot.html"
-    insert_plot_into_html("templates\index.html", "templates\lines.html", "templates\plot.html") #must be called after get_stock_price()
+    insert_plot_into_html(os.path.join("templates","index.html"), os.path.join("templates","lines.html"), os.path.join("templates","plot.html")) #must be called after get_stock_price()
 
     return render_template('plot.html')
 

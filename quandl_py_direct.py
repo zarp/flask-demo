@@ -2,6 +2,7 @@ import quandl
 import pandas as pd
 import datetime as dt
 from bokeh.plotting import figure, output_file, show, save
+import os
 
 def load_file_as_list(CURR_FILENAME):
     """
@@ -35,7 +36,7 @@ def get_stock_price(stock_symbol):
     date = dt.date.today()    # date.year, date.month, date.day
     last_mo_data=data.ix[pd.datetime(date.year,date.month-1,1) : pd.datetime(date.year,date.month-1,data.index.days_in_month[-2])]
 
-    output_file("templates\lines.html")
+    output_file(os.path.join("templates","lines.html"))
 
     p = figure(title="Interactive stock chart", x_axis_label='Date', x_axis_type="datetime", y_axis_label='Close price, USD')
     p.line(last_mo_data['Close'].index, last_mo_data['Close'], legend=stock_symbol, line_width=2)
@@ -72,5 +73,5 @@ def insert_plot_into_html(orig_template, bare_plot_file, output_html):
 if __name__ == "__main__":
     stock_symbol = raw_input("enter stock: ")
     get_stock_price(stock_symbol)
-    insert_plot_into_html("templates\index.html", "templates\lines.html", "templates\plot.html")
+    insert_plot_into_html(os.path.join("templates","index.html"), os.path.join("templates","lines.html"), os.path.join("templates","plot.html"))
 
