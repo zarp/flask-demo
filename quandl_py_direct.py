@@ -15,7 +15,7 @@ def load_file_as_list(CURR_FILENAME):
 
 def write_string_to_file(CURR_FILENAME, string_to_write):
     """
-    Writes a string (string_to_write) to the file SEQUENCE_FILENAME
+    Writes a string (string_to_write) to CURR_FILENAME
     """
     inFile=open(CURR_FILENAME,'w')
     inFile.write(string_to_write)
@@ -25,15 +25,10 @@ def write_string_to_file(CURR_FILENAME, string_to_write):
 def get_stock_price(stock_symbol):
     quandl.ApiConfig.api_key = 'rxxtZcyJWMVKp4EVby_9' 
     data = quandl.get("WIKI/" + stock_symbol)
-    # "Date" is an index (DateTime Index to be specific), not a normal column
-    # to make it a normal column, use
-    # data=data.reset_index()
 
-    #col_names=list(data.columns.values) #does not include the name of 1st "date" col
-    col_names=list(data) #shorter version of the top line (that line works just as fine, just longer)
-    #print('col names=',col_names)
+    col_names=list(data)
 
-    date = dt.date.today()    # date.year, date.month, date.day
+    date = dt.date.today(
     last_mo_data=data.ix[pd.datetime(date.year,date.month-1,1) : pd.datetime(date.year,date.month-1,data.index.days_in_month[-2])]
 
     output_file(os.path.join("templates","lines.html"))
@@ -41,7 +36,7 @@ def get_stock_price(stock_symbol):
     p = figure(title="Interactive stock chart", x_axis_label='Date', x_axis_type="datetime", y_axis_label='Close price, USD')
     p.line(last_mo_data['Close'].index, last_mo_data['Close'], legend=stock_symbol, line_width=2)
 
-    save(p) #save(p)
+    save(p)
     return None
 
 def insert_plot_into_html(orig_template, bare_plot_file, output_html):
@@ -62,11 +57,8 @@ def insert_plot_into_html(orig_template, bare_plot_file, output_html):
     #### after </form>
     templines2=load_file_as_list(bare_plot_file) 
     templines2=templines2[27:]
-    #print('ttt2=',templines2)
     lines = headerlines + templines + lines + templines2
 
-##    lines.append('    </body>\n')
-##    lines.append('</html>')
     write_string_to_file(output_html, "".join(lines))
     return None
 

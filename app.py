@@ -26,6 +26,5 @@ def plot():
     return render_template('plot.html')
 
 if __name__ == '__main__':
-  #app.debug = True #uncomment when done debugging
   app.config.update(TEMPLATES_AUTO_RELOAD=True)
   app.run(port=33507)
