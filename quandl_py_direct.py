@@ -23,7 +23,7 @@ def write_string_to_file(CURR_FILENAME, string_to_write):
     return None
 
 def get_stock_price(stock_symbol):
-    quandl.ApiConfig.api_key = MY_QUANDL_API_KEY
+    quandl.ApiConfig.api_key = os.environ.get(MY_QUANDL_API_KEY, None)
     data = quandl.get("WIKI/" + stock_symbol)
 
     col_names=list(data)
